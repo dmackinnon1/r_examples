@@ -1,0 +1,47 @@
+---
+title: "Deep Dive into the Multiplication Table, with R"
+author: "dmackinnon1"
+date: "November 26, 2015"
+output: html_document
+---
+
+## Generating a 10x10 multiplication table in R
+Just simple explorations of the multiplication table in R, originally shared at [mathrecreation.com](http://www.mathrecreation.com/2012/08/a-deep-dive-into-multiplication-table.html) using Fathom and Tinkerplots.
+
+There are many ways of generating a 10x10 multiplicaiton table, here's one:
+
+```{r}
+mult <- matrix(1:10, 1,10)
+for (i in 2:10) {
+  mult <- rbind(mult, i*mult[1,])
+}
+mult
+```
+
+## Multiplication Rainbow, in R
+And here's the rainbow.
+
+```{r, echo=FALSE}
+n <- 100
+x <- seq(1:10) 
+y <- x
+rb <- rainbow(n, s = 1, v = 1, start = 0, end = max(1, n - 1)/n, alpha = 1)
+image(x=x, y=y, mult, col=rb, main="Multiplication Rainbow", ylim = rev(range(y)))
+```
+
+## Star Polygons in the multiplication table
+
+This one is a little convoluted in R.
+```{r}
+skipCount <- append(mult[3,],3) %%10
+circleY <- sin(2*pi*skipCount/10)
+circleX <- cos(2*pi*skipCount/10)
+plot(circleX, circleY, type = "l", main="Star Polygon from Skip Counting", axes=FALSE, ylab = "", xlab = "")
+```
+
+## Modular patterns in the multiplication table
+```{r}
+mod <- mult %%5
+mod
+image(x=x, y=y, mod, col=rb, main="Modular Multiplication Quilt", ylim = rev(range(y)))
+```
