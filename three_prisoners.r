@@ -17,12 +17,12 @@ for (i in n) { ThreePrisoners$VisitsWarden[i] <- sample(c('A','B','C'),1) }
 
 # we will keep track to see if the prisoner that has gone to see the warden  
 # was the one selected for pardoning
-ThreePrisoners$VisitorPardoned <- ThreePrioners$Pardoned == ThreePriooners$VisitsWarden
+ThreePrisoners$VisitorPardoned <- ThreePrisoners$Pardoned == ThreePrisoners$VisitsWarden
 
 # The Warden will tell which prisoner is pardoned ... or not
 for (i in n) {
   if(ThreePrisoners$VisitorPardoned[i]){
-    ThreePrisoners$SaidExecuted[i] <-  sample(c('A','B'.,'C')[- which(c('A','B','C') == ThreePrisoners$Pardoned[i])],1)
+    ThreePrisoners$SaidExecuted[i] <-  sample(c('A','B','C')[- which(c('A','B','C') == ThreePrisoners$Pardoned[i])],1)
   } else {
     t <- c('A','B','C')[-which(c('A','B','C')==ThreePrisoners$VisitsWarden[i])]; 
     ThreePrisoners$SaidExecuted[i] <- t[-which(t==ThreePrisoners$Pardoned[i])]
