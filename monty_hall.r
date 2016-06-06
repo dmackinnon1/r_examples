@@ -15,7 +15,7 @@ for (i in n) { MontyHall$PrizeDoor[i] <- sample(1:3,1) }
 for (i in n) { MontyHall$FirstChoice[i] <- sample(1:3,1) }
 
 # we will keep track to see if the contestant picked the winner, 
-# but they are not told at this poin
+# but they are not told at this point
 MontyHall$SelectedWinner <- MontyHall$FirstChoice == MontyHall$PrizeDoor
 
 # Monty will reveal that one of the other doors is a looser
