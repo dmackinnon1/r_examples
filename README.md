@@ -5,6 +5,9 @@ Plots sine curve, circle, and a lissajous curve.
 ##example2.r
 Plots an archimedian spiral and a phylotaxis spiral.
 
+##chlandi\_example.r
+Displays an image based on "Chlandi Figures."
+
 ##r\_multiplication.Rmd
 Generating the standard school multiplicaiton table, and some related graphics, in an R markdown file.
 
