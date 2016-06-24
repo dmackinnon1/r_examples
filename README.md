@@ -18,3 +18,5 @@ Sourcing the script populates the MontyHall data frame.
 ###montyHall.june\_6\_2016.csv
 Result of exporting a run of monty\_hall.r to a CSV file.
 
+##pascal.r
+A script that displays an image of Pascal's triangle, modulo a number provided.
