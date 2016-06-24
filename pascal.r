@@ -1,7 +1,7 @@
 #Pascal Triangle, displayed modulo some number (mod)
 
 # Choose a size for the triangle, from 3 to 500-ish 
-size <- 5
+size <- 100
 
 # Display modulo some other number, this will cause different
 # triangle patterns. 2 works well, try also 7, 11 and 118 
