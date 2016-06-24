@@ -1,4 +1,4 @@
-# Chilandi 41 - similar to Chilandi's original figure 41
+# Chilandi 53 - similar to Chilandi's original figure 53
 
 # Generates an image similar to a "Chlandi Figure." Chlandi Figures are nodal patterns
 # that occur on vibrating surfaces.
