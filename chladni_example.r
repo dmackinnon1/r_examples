@@ -13,12 +13,12 @@
 t <- 0:500
 f <- 2*pi/500
 i <- 0
-Chlandi  <- 0:500 * 0 # first row is zero, as sin(0) = 0
+chlandi  <- 0:500 * 0 # first row is zero, as sin(0) = 0
 
 # Now add 500 more rows, first factor in each term varies as we go across a row (from t)
 # second factor of each term varies as we go down a column (from i)
 for ( i in 1:500) { 
-  Chlandi  <- rbind(Chlandi , # comment out different factors below to generate
+  chlandi  <- rbind(chlandi , # comment out different factors below to generate
                               # a variety of images
                     +  sin(1/2*f*t)*sin(1/2*f*i) 
                     #+ sin(f*t)*sin(f*i)  
@@ -39,8 +39,8 @@ par(mfrow=c(1,1))
 # point, not whether it happens to be up or down - in a standing
 # wave the non nodal areas oscillate between positive and negative.
 # So just take the absolute value of each point.
-Chlandi <- abs(Chlandi)
+chlandi <- abs(chlandi)
 
 # use the image or contour functions to display the results
-image(Chlandi, col=grey.colors(40, start=0, end=1))
-#contour(Chlandi)
+image(chlandi, col=grey.colors(40, start=0, end=1))
+#contour(chlandi)

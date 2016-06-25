@@ -1,6 +1,6 @@
-# Chilandi 53 - similar to Chilandi's original figure 53
+# Chladni 53 - similar to Chladni's original figure 53
 
-# Generates an image similar to a "Chlandi Figure." Chlandi Figures are nodal patterns
+# Generates an image similar to a "chladni Figure." chladni Figures are nodal patterns
 # that occur on vibrating surfaces.
 
 # The surface is modeled as a matrix, each point representing the 
@@ -14,12 +14,12 @@
 t <- 0:500
 f <- 2*pi/500
 i <- 0
-Chlandi  <- rep(1, 501) # first row is one, as cos(0) = 1
+chladni  <- rep(1, 501) # first row is one, as cos(0) = 1
 
 # Now add 500 more rows, first factor in each term varies as we go across a row (from t)
 # second factor of each term varies as we go down a column (from i)
 for ( i in 1:500) { 
-  Chlandi  <- rbind(Chlandi , 
+  chladni  <- rbind(chladni , 
                     + cos(1/2*f*t)*cos(1/2*f*i) 
                     - cos(3/2*f*t)*cos(3/2*f*i)
                     + cos(5/2*f*t)*cos(5/2*f*i)
@@ -35,8 +35,8 @@ par(mfrow=c(1,1))
 # point, not whether it happens to be up or down - in a standing
 # wave the non nodal areas oscillate between positive and negative.
 # So just take the absolute value of each point.
-Chlandi <- abs(Chlandi)
+chladni <- abs(chladni)
 
 # use the image or contour functions to display the results
-image(Chlandi, col=grey.colors(40, start=0, end=1))
-#contour(Chlandi)
+image(chladni, col=grey.colors(40, start=0, end=1))
+#contour(chladni)
