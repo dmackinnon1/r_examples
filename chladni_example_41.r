@@ -1,4 +1,4 @@
-# Chladi 41 - similar to Chladni's original figure 41
+# Chladni 41 - similar to Chladni's original figure 41
 
 # Generates an image similar to a "chladni Figure." chladni Figures are nodal patterns
 # that occur on vibrating surfaces.
