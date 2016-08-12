@@ -2,7 +2,7 @@
 # Monty Hall Simulation 
 # R script
 # 
-# This script sets up a data frame consistig of trials of the "Monty Hall Problem."
+# This script sets up a data frame consisting of trials of the "Monty Hall Problem."
 
 # first we decide how many trials to include in the simulation
 n <- 1:1000
