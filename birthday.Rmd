@@ -1,0 +1,81 @@
+---
+title: "Birthday"
+author: "Dan MacKinnon"
+date: "March 15, 2017"
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+##Introduction
+The Birthday Problem, as frequently happens in questions of probability, is easy to state and understand, yet leads to an (initially) suprising solution.
+
+> In a group of *n* people, how likely is it to find two or more people sharing the same birthday?
+
+Many people are surprised to find out that in a group of 23 people, there is just over a fifty percent chance of finding a birthday match, and in a group of 60 people, you are almost certain to find two or more people sharing a birthday.
+
+## Direct Calculation
+
+If $B_n$ is  the event that we find two or more people in a group of $n$ that share a birthday, then $\neg B_n$, is the probability that there are no birthday matches in a group of $n$ people, and the probability of this event is a bit easier to calculate.
+
+In a group of one, $n = 1$, there is no chance to find two or more people that share a birthday. In a group of two, the probabability of not sharing a birthday is $p(\neg B_2) = \frac{364}{365}$. For a group of three, we have $p(\neg B_2) = \frac{364}{365} \times \frac{363}{365}$, and in general:
+
+$$p(\neg B_n) =  \prod_{i=1}^n \frac{366-i}{365}$$
+
+We can set up a data frame **BCalc** in R to calculate this directly.
+
+```{r}
+group_size <- 60
+group <- 1:group_size
+BCalc <- data.frame(group)
+BCalc$noMatch[1] = 1;
+for (i in 2:group_size) {
+  BCalc$noMatch[i] <- BCalc$noMatch[i-1]*(366-i)/365
+}
+BCalc$match <- 1 - BCalc$noMatch
+```
+
+Plotting this relationship between the probability of a birthday match and the size of the group involved gives a characteristic sigmoid or logistic curve.
+
+```{r}
+plot(BCalc$group, BCalc$match,main='probability of a birthday match', xlab = 'group size', ylab='probability of a match')
+lines(BCalc$group, BCalc$match)
+```
+
+This gives the somewhat surprising result that, in a group of 23 people there is over a fifity percent chance of finding two people with the same birthday.
+```{r}
+BCalc$match[23]
+```
+By the time you have sixty people together, it is almost a sure thing to find a match.
+```{r}
+BCalc$match[60]
+```
+## Setting up the Simulation
+
+A simulation can be set up by randomly generating groups of numbers between 1 and 365, and checking to see if there are matches. For each group size between 1 and 60, we'll generate 100 groups and check for collisions, the results will be cases in the **BSim** data frame.
+
+```{r}
+group_size <- 60
+trial_limit <-100
+trial_index <- 1:(group_size * trial_limit)
+BSim <- data.frame(trial_index)
+current_index <- 1;
+for (i in 1:group_size) {
+  for (k in 1:trial_limit) {
+    t <- sample(1:365, i, replace=TRUE)
+    BSim$groupSize[current_index] <- i
+    BSim$foundMatch[current_index] <- as.logical(anyDuplicated(t))
+    current_index <- current_index +1
+  }
+}
+```
+
+## Exploring the Simulation
+For each group size, we can find the proportion of groups that contained a match, and plot the results in comparison to the expected curve from the **BCalc** data frame.
+
+```{r}
+tbl <- table(BSim$groupSize,BSim$foundMatch)
+mtrx <- as.matrix(prop.table(tbl,1)[,2])
+plot(1:group_size, mtrx[,1],main='proportion of found birthday matches', xlab = 'group size', ylab='proportion with a match')
+lines(BCalc$group, BCalc$match)
+```

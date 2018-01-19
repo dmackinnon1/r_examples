@@ -1,0 +1,89 @@
+---
+title: "Twin Lab Partners"
+author: "Dan MacKinnon"
+date: "March 21, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+This a problem from **Will You be Alive 10 Years from Now** by Paul J. Nahin. In that book, Nahin provides Matlab simulations as well as theoretical calculations to solve the problems that he presents.
+
+The Twin Lab-Partner problem is from chapter 2.
+
+> A set of twins is enrolled the same science labratory class of 20 students. As part of the lab work, the class is being split up into 5 groups of students, with 4 students in each group. Assuming that the students are randomly assigned to their groups, what is the probability of the twins ending up in the same group?
+
+## Simulation
+
+```{r}
+trial_limit <- 10000
+trial <- 1:trial_limit
+Twins <- data.frame(trial)
+
+#20 students arranged in 5 groups of 4
+limit <- 20
+groups <- 5;
+for (i in trial) {
+  students <- sample(append(1:(limit-1),sample(1:(limit-1),1)), limit)
+  Twins$students[i] <- list(students)
+  Twins$sameGroup[i] <- anyDuplicated(which(students == students[duplicated(students)]) %% groups) > 0
+}
+```
+
+```{r}
+t <- prop.table(table(Twins$sameGroup))
+t
+```
+
+So the probability that the twins end up together is `r t[2]`.
+
+## Explanation of the Simulation
+
+Setting up the students and their groups is the tricky part of this simulation.
+
+First we start with a listing of numbers from 1 to 19 to represent the first 19 students.
+```{r eval=FALSE}
+limit <- 20
+1:(limit-1)
+```
+
+Then we randomly generate a duplicate number, to represent the twin, and add this to our list
+```{r eval=FALSE}
+limit <- 20
+append(1:(limit-1),sample(1:(limit-1),1))
+```
+We shuffle up the class list, because we are going to use the position of each number in the list to determine which group they go in.
+
+```{r eval=FALSE}
+limit <- 20
+students <- sample(append(1:(limit-1),sample(1:(limit-1),1)), limit)
+```
+We pick out of the student list which number was duplicated:
+
+```{r eval=FALSE}
+students[duplicated(students)]
+```
+
+We figure out which groups the duplicates are in by taking their position in the list mod 5.
+```{r eval=FALSE}
+groups <- 5;
+which(students == students[duplicated(students)]) %% groups
+```
+
+We now have a two element list of group numbers, so we check to see if there are duplicates in that list.
+
+```{r eval=FALSE}
+groups <- 5;
+anyDuplicated(which(students == students[duplicated(students)]) %% groups) > 0
+```
+
+##Theoretical Analysis
+
+An easy solution to the problem, which Nahin credits to Nick Hobson, is to note that one twin will be placed in one of the four available groups. There are 19 remaining places, three of which are within the group that the first twin is in. Consequently the probability of selecting one of those for the second twin is $p= \frac{3}{19} = 0.15789...$, which is hopefully close to what we observed in our simulation.
+
+## References
+[1] P.J. Nahin, *Will You Be Alive 10 Years from Now?*, Princeton University Press, Princeton New Jersey, 2014.

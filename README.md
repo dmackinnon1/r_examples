@@ -1,22 +1,19 @@
-# Some simple R programming examples
-## example1.r
-Plots sine curve, circle, and a lissajous curve.
+# R examples
+## simple
+Scripts in this folder do some simple things: plot a sine curve, circle, and a lissajous curve, draw a phyllotaxis spiral, create a multiplication table, a pascal triangle fractal... 
 
-## example2.r
-Plots an archimedian spiral and a phylotaxis spiral.
+## chladni
+Scripts in this folder draw a variety of Chladni figures
+[http://www.mathrecreation.com/2016/06/more-chlandi-figures-in-r.html]
 
-## chladni\_example.r
-Displays an image similar to a "Chladni Figure."
 
-## r\_multiplication.Rmd
-Generating the standard school multiplicaiton table, and some related graphics, in an R markdown file.
-
-## monty\_hall.r
+## monty
 A script that generates 1000 trials of the Monty Hall problem scenario. An example of a simple simulation in R.
 Sourcing the script populates the MontyHall data frame.
-
-### montyHall.june\_6\_2016.csv
-Result of exporting a run of monty\_hall.r to a CSV file.
-
-## pascal.r
-A script that displays an image of Pascal's triangle, modulo a number provided.
+[http://www.mathrecreation.com/2016/08/monty-r-and-monty-n.html]
+*
+## Probability Simulations
+*pancake.Rmd* - A simulation of the 'burnt pancake problem.'
+*false_positives.Rmd* - Simulation for a problem infolving false positives in a medical test.
+*birthday.Rmd* - The famous birthday problem.
+*twin_lab_partners.Rmd* - A problem from  **Will You be Alive 10 Years from Now** by Paul J. Nahin. 
