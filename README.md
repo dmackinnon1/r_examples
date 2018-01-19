@@ -8,12 +8,14 @@ Scripts in this folder draw a variety of Chladni figures
 
 
 ## monty
-A script that generates 1000 trials of the Monty Hall problem scenario. An example of a simple simulation in R.
-Sourcing the script populates the MontyHall data frame.
-[http://www.mathrecreation.com/2016/08/monty-r-and-monty-n.html]
-*
+A script that generates 1000 trials of the Monty Hall problem scenario. Sourcing the script *monty_hall.r* populates the MontyHall data frame. [http://www.mathrecreation.com/2016/08/monty-r-and-monty-n.html]
+
+
 ## Probability Simulations
 *pancake.Rmd* - A simulation of the 'burnt pancake problem.'
+
 *false_positives.Rmd* - Simulation for a problem infolving false positives in a medical test.
+
 *birthday.Rmd* - The famous birthday problem.
+
 *twin_lab_partners.Rmd* - A problem from  **Will You be Alive 10 Years from Now** by Paul J. Nahin. 
