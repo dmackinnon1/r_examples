@@ -1,0 +1,21 @@
+---
+title: "R Roulette"
+output: html_notebook
+---
+
+Some of the "roulette" exercises from [Grinstead and Snell’s Introduction to Probability](https://math.dartmouth.edu/~prob/prob/prob.pdf)
+
+# Exercise 6, page 13
+> In Las Vegas, a roulette wheel has 38 slots numbered 0, 00, 1, 2, . . . , 36. The 0 and 00 slots are green and half of the remaining 36 slots are red and half are black. A croupier spins the wheel and throws in an ivory ball. If you bet 1 dollar on red, you win 1 dollar if the ball stops in a red slot and otherwise you lose 1 dollar. Write a program to find the total winnings for a player who makes 1000 bets on red.
+
+
+# Exercise 7, page 13
+> Another form of bet for roulette is to bet that a specific number (say 17) will turn up. If the ball stops on your number, you get your dollar back plus 35 dollars. If not, you lose your dollar. Write a program that will plot your winnings when you make 500 plays of roulette at Las Vegas, first when you bet each time on red (see Exercise 6), and then for a second visit to Las Vegas when you make 500 plays betting each time on the number 17. What differences do you see in the graphs of your winnings on these two occasions?
+
+# Exercise 9, page 13, 14
+> The Labouchere system for roulette is played as follows. Write down a list ofnumbers, usually 1, 2, 3, 4. Bet the sum of the first and last, 1 + 4 = 5, on red. If you win, delete the first and last numbers from your list. If you lose,
+add the amount that you last bet to the end of your list. Then use the new list and bet the sum of the first and last numbers (if there is only one number, bet that amount). Continue until your list becomes empty. Show that, if this
+happens, you win the sum, 1 + 2 + 3 + 4 = 10, of your original list. Simulate this system and see if you do always stop and, hence, always win. If so, why is this not a foolproof gambling system?
+
+# Exercise 10, page 14
+> Another well-known gambling system is the martingale doubling system. Suppose that you are betting on red to turn up in roulette. Every time you win, bet 1 dollar next time. Every time you lose, double your previous bet. Suppose that you use this system until you have won at least 5 dollars or you have lost more than 100 dollars. Write a program to simulate this and play it a number of times and see how you do. In his book The Newcomes, W. M. Thackeray remarks “You have not played as yet? Do not do so; above all avoid a martingale if you do.” Was this good advice?
