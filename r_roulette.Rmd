@@ -40,9 +40,12 @@ for (i in 1:1000){
   }
   loot[i] <- win
 }
-plot(loot)
+plot(loot, main='winnings over 1000 bets of one dollar')
 ```
 
+```{r , echo=FALSE}
+barplot(table(games), main='color of winner')
+```
 
 
 
