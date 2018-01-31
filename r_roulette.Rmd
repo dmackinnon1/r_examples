@@ -34,7 +34,7 @@ loot <-1:1000;
 win <-1;
 for (i in 1:1000){
   if (games[i] == 'red'){
-    win = win + 1;
+    win = win + 1
   } else {
     win = win -1
   }
@@ -47,8 +47,37 @@ plot(loot, main='winnings over 1000 bets of one dollar')
 barplot(table(games), main='color of winner')
 ```
 
-
-
+Let's try the same game of placing 1000 bets, 1000 times.
+```{r}
+betOnRed <- function(){ 
+  games <- sample(Roulette$color, 1000, replace=TRUE, prob=NULL)
+  win <-1;
+  for (i in 1:1000){
+    if (games[i] == 'red'){
+      win = win + 1
+    } else {
+      win = win -1
+    }
+  }
+  win
+}
+winnings <-1:1000;
+for (i in 1:1000){
+  winnings[i] <- betOnRed()
+}
+plot(winnings)
+lines(winnings, lwd=1, col='blue')
+```
+```{r}
+hist(winnings)
+abline(v=mean(winnings), col="blue")
+```
+We can look at quantiles for the winnings to get a sense of the distribution as shown in the histogram above.
+```{r}
+ms <- as.matrix(quantile (winnings,  p=seq(from = 0, to = 1, by = 0.1)))
+  colnames(ms) <- c("winnings")
+  print(kable(ms))
+```
 # Exercise 7, page 13
 > Another form of bet for roulette is to bet that a specific number (say 17) will turn up. If the ball stops on your number, you get your dollar back plus 35 dollars. If not, you lose your dollar. Write a program that will plot your winnings when you make 500 plays of roulette at Las Vegas, first when you bet each time on red (see Exercise 6), and then for a second visit to Las Vegas when you make 500 plays betting each time on the number 17. What differences do you see in the graphs of your winnings on these two occasions?
 
