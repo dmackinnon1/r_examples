@@ -19,3 +19,5 @@ A script that generates 1000 trials of the Monty Hall problem scenario. Sourcing
 *birthday.Rmd* - The famous birthday problem.
 
 *twin_lab_partners.Rmd* - A problem from  **Will You be Alive 10 Years from Now** by Paul J. Nahin. 
+
+*r_roulette.Rmd* - Simulations inspired by exercises from [Grinstead and Snell’s Introduction to Probability](https://math.dartmouth.edu/~prob/prob/prob.pdf)
