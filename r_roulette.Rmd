@@ -9,13 +9,12 @@ knitr::opts_chunk$set(echo = TRUE,  results='asis')
 library(knitr)
 ```
 
+Roulette simulations inspired by some of the "roulette" exercises from [Grinstead and Snell’s Introduction to Probability](https://math.dartmouth.edu/~prob/prob/prob.pdf)
 
-Some of the "roulette" exercises from [Grinstead and Snell’s Introduction to Probability](https://math.dartmouth.edu/~prob/prob/prob.pdf)
+## Basic play
+> In Las Vegas, a roulette wheel has 38 slots numbered 0, 00, 1, 2, . . . , 36. The 0 and 00 slots are green and half of the remaining 36 slots are red and half are black. 
 
-# Exercise 6, page 13
-> In Las Vegas, a roulette wheel has 38 slots numbered 0, 00, 1, 2, . . . , 36. The 0 and 00 slots are green and half of the remaining 36 slots are red and half are black. A croupier spins the wheel and throws in an ivory ball. If you bet 1 dollar on red, you win 1 dollar if the ball stops in a red slot and otherwise you lose 1 dollar. Write a program to find the total winnings for a player who makes 1000 bets on red.
-
-In this simulation we will use a *double zero wheel*, where there are two slots labled 0 and 00 that are coloured green. The remaining odd number slots are coloured red and the even numbered slots are black.
+As described above, we'll create a set of data corresponding to the *double zero wheel* style of roulette table with 38 slots, where there are two slots labled 0 and 00 that are coloured green, while the remaining 36 slots are coloured red (on odd numbers) and black (on even numbers).
 
 ```{r}
 Roulette <- data.frame(1:38)
@@ -32,6 +31,8 @@ for (i in 3:38){
   }
 }
 ```
+
+> A croupier spins the wheel and throws in an ivory ball. If you bet 1 dollar on red, you win 1 dollar if the ball stops in a red slot and otherwise you lose 1 dollar. (Exercise 6, page 13)
 
 Now that we have the Roulette wheel, we can run some simple simulations. In the first simulation, we have a player placing 1000 bets of 1 dollar on Red.
 
@@ -58,7 +59,7 @@ Let's try the same game of placing 1000 bets, but do it 1000 times.
 ```{r}
 betOnRed <- function(){ 
   games <- sample(Roulette$color, 1000, replace=TRUE, prob=NULL)
-  win <-0;
+  win <- 0;
   for (i in 1:1000){
     if (games[i] == 'red'){
       win = win + 1
@@ -85,15 +86,15 @@ winningQuantiles <- as.matrix(quantile (winnings,  p=seq(from = 0, to = 1, by = 
 colnames(winningQuantiles) <- c("winnings")
 print(kable(winningQuantiles))
 ```
-# Exercise 7, page 13
-> Another form of bet for roulette is to bet that a specific number (say 17) will turn up. If the ball stops on your number, you get your dollar back plus 35 dollars. If not, you lose your dollar. Write a program that will plot your winnings when you make 500 plays of roulette at Las Vegas, first when you bet each time on red (see Exercise 6), and then for a second visit to Las Vegas when you make 500 plays betting each time on the number 17. What differences do you see in the graphs of your winnings on these two occasions?
 
-We'll just follow the second method, but for 1000 bets so we can compare with the previous problem.
+> Another form of bet for roulette is to bet that a specific number (say 17) will turn up. If the ball stops on your number, you get your dollar back plus 35 dollars. If not, you lose your dollar. (Exercise 7, page 13)
+
+Again, we will place 1000 bets and se what we get, and repeat that 1000 times.
 
 ```{r}
 betOn17 <- function(){ 
   games <- sample(Roulette$number, 1000, replace=TRUE, prob=NULL)
-  win <-0;
+  win <- 0;
   for (i in 1:1000){
     if (games[i] == 17){
       win = win + 35
@@ -124,9 +125,14 @@ colnames(winningQuantiles) <- c("winnings")
 print(kable(winningQuantiles))
 ```
 
-# Exercise 9, page 13, 14
-> The Labouchere system for roulette is played as follows. Write down a list ofnumbers, usually 1, 2, 3, 4. Bet the sum of the first and last, 1 + 4 = 5, on red. If you win, delete the first and last numbers from your list. If you lose, add the amount that you last bet to the end of your list. Then use the new list and bet the sum of the first and last numbers (if there is only one number, bet that amount). Continue until your list becomes empty. Show that, if this
-happens, you win the sum, 1 + 2 + 3 + 4 = 10, of your original list. Simulate this system and see if you do always stop and, hence, always win. If so, why is this not a foolproof gambling system?
+## Labouchere's Ruin 
+> The Labouchere system for roulette is played as follows. Write down a list ofnumbers, usually 1, 2, 3, 4. Bet the sum of the first and last, 1 + 4 = 5, on red. If you win, delete the first and last numbers from your list. If you lose, add the amount that you last bet to the end of your list. Then use the new list and bet the sum of the first and last numbers (if there is only one number, bet that amount). Continue until your list becomes empty. (Exercise 9, page 13, 14)
+
+Using the Labouchere method, if you eventually run out of numbers, you will always win the sum of the list of numbers you began with. Imagine that you win each bet you place: you will place bets equal to the sum of all the numbers in your list, summing the last and fist digits and reducing the length of the list as you go. Now if you loose any of these bets, you add the sum of the two numbers to your list, guaranteeing that eventually you will add that lost sum back into your total winnings.
+
+Note that winning a bet will reduce the length of the list by two numbers, while loosing a bet will only increase the list by one. According to the Law of Large Numbers, because the theoretical odds of winning on red are non zero (16 out of 38), the list will eventually be reduced down to nothing.
+
+The problem for the Labouchere method is that although it guarantees an eventual win, there is no telling how long it will take. A limit is set on how much can be won, but not on how much can be lost along the way.
 
 We can simulate the Labouchere method using the functions below.
 
@@ -177,12 +183,12 @@ betOnLabouchere <- function(){
 }
 
 #select a very long run
-max <- 0
+maxVal <- 0
 maxRun <- NULL
 for (i in 1:1000) {
   currentRun <- betOnLabouchere()
-  if (length(currentRun) > max){
-    max = length(currentRun)
+  if (length(currentRun) > maxVal){
+    maxVal = length(currentRun)
     maxRun <- currentRun
   }
 }
@@ -190,8 +196,57 @@ plot(maxRun)
 lines(maxRun, lwd=1, col='blue')
 ```
 
-Although the betting method eventually halts and gives a sum of 10, it may take a long time to get there, and you may go very deep into debt while applying the methods. An example of a very long run is shown above. This run took `r length(maxRun)` turns to complete, and at one point the winnings dipped to the low of `r min(maxRun)`. 
+Although the betting method eventually halts and gives a sum of 10, it may take a long time to get there, and you may go very deep into debt. An example of a very long run is shown above. This run took `r length(maxRun)` turns to complete, and at one point the winnings dipped to the low of `r min(maxRun)`. 
 
 
-# Exercise 10, page 14
-> Another well-known gambling system is the martingale doubling system. Suppose that you are betting on red to turn up in roulette. Every time you win, bet 1 dollar next time. Every time you lose, double your previous bet. Suppose that you use this system until you have won at least 5 dollars or you have lost more than 100 dollars. Write a program to simulate this and play it a number of times and see how you do. In his book The Newcomes, W. M. Thackeray remarks “You have not played as yet? Do not do so; above all avoid a martingale if you do.” Was this good advice?
+# Double Trouble
+> Another well-known gambling system is the martingale doubling system. Suppose that you are betting on red to turn up in roulette. Every time you win, bet 1 dollar next time. Every time you lose, double your previous bet. Suppose that you use this system until you have won at least 5 dollars or you have lost more than 100 dollars... In his book The Newcomes, W. M. Thackeray remarks “You have not played as yet? Do not do so; above all avoid a martingale if you do.” Was this good advice? (Exercise 10, page 14)
+
+```{r}
+
+betOnMartingale <- function(){ 
+  currentWin <- 0;
+  bet <- 1;
+  winnings <- 1:1
+  winnings[1] <- 0
+  currentWin <- 0
+  while (currentWin <=5 && currentWin >= -100){
+      landed <- sample(Roulette$color, 1, replace=TRUE, prob=NULL)
+      if (landed == "red"){
+        winnings <- appendToList(winnings, winnings[length(winnings)] + bet)
+      } else {
+        winnings <- appendToList(winnings, winnings[length(winnings)] - bet)
+        bet <- 2*bet
+      }
+      currentWin <-winnings[length(winnings)]
+  }
+  winnings
+}
+
+#select a very long run
+maxVal <- 0
+maxRun <- NULL
+finals <- 1:5000
+for (i in 1:5000) {
+  currentRun <- betOnMartingale()
+  if (length(currentRun) > maxVal){
+    maxVal = length(currentRun)
+    maxRun <- currentRun
+  }
+  finals[i] <- currentRun[length(currentRun)]
+}
+plot(maxRun)
+lines(maxRun, lwd=1, col='blue')
+```
+Long runs of the Martingale doubling method result in large swings in the final bets. The overall distribution of winnings reflects this - with the mean winnings ending up at `r mean(finals)`, but with outliers both in higher winnings, and in loosings that, in this simulation, go as low as `r min(finals)`.
+
+```{r}
+hist(finals)
+abline(v=mean(finals), col="blue")
+```
+
+
+```{r}
+boxplot(finals, horizontal=TRUE)
+```
+The strategy of "doubling on a loss" seems motivated by the classic fallacy of "gambler's ruin," which loosely says that "if I lost just now, it means a win is more likely on the next try." Unfotunately for gamblers everywhere, winning after a loss is not more likely - each spin of the roulette wheel is independent.
