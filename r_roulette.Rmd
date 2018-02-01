@@ -3,6 +3,13 @@ title: "R Roulette"
 output: html_notebook
 ---
 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,  results='asis')
+library(knitr)
+```
+
+
 Some of the "roulette" exercises from [Grinstead and Snell’s Introduction to Probability](https://math.dartmouth.edu/~prob/prob/prob.pdf)
 
 # Exercise 6, page 13
@@ -31,7 +38,7 @@ Now that we have the Roulette wheel, we can run some simple simulations. In the 
 ```{r}
 games <- sample(Roulette$color, 1000, replace=TRUE, prob=NULL)
 loot <-1:1000;
-win <-1;
+win <-0;
 for (i in 1:1000){
   if (games[i] == 'red'){
     win = win + 1
@@ -47,11 +54,11 @@ plot(loot, main='winnings over 1000 bets of one dollar')
 barplot(table(games), main='color of winner')
 ```
 
-Let's try the same game of placing 1000 bets, 1000 times.
+Let's try the same game of placing 1000 bets, but do it 1000 times.
 ```{r}
 betOnRed <- function(){ 
   games <- sample(Roulette$color, 1000, replace=TRUE, prob=NULL)
-  win <-1;
+  win <-0;
   for (i in 1:1000){
     if (games[i] == 'red'){
       win = win + 1
@@ -72,19 +79,119 @@ lines(winnings, lwd=1, col='blue')
 hist(winnings)
 abline(v=mean(winnings), col="blue")
 ```
-We can look at quantiles for the winnings to get a sense of the distribution as shown in the histogram above.
+The mean value for the winnings over these trials was `r mean(winnings)`. We can look at quantiles for the winnings to get a sense of the distribution as shown in the histogram above.
 ```{r}
-ms <- as.matrix(quantile (winnings,  p=seq(from = 0, to = 1, by = 0.1)))
-  colnames(ms) <- c("winnings")
-  print(kable(ms))
+winningQuantiles <- as.matrix(quantile (winnings,  p=seq(from = 0, to = 1, by = 0.1)))
+colnames(winningQuantiles) <- c("winnings")
+print(kable(winningQuantiles))
 ```
 # Exercise 7, page 13
 > Another form of bet for roulette is to bet that a specific number (say 17) will turn up. If the ball stops on your number, you get your dollar back plus 35 dollars. If not, you lose your dollar. Write a program that will plot your winnings when you make 500 plays of roulette at Las Vegas, first when you bet each time on red (see Exercise 6), and then for a second visit to Las Vegas when you make 500 plays betting each time on the number 17. What differences do you see in the graphs of your winnings on these two occasions?
 
+We'll just follow the second method, but for 1000 bets so we can compare with the previous problem.
+
+```{r}
+betOn17 <- function(){ 
+  games <- sample(Roulette$number, 1000, replace=TRUE, prob=NULL)
+  win <-0;
+  for (i in 1:1000){
+    if (games[i] == 17){
+      win = win + 35
+    } else {
+      win = win -1
+    }
+  }
+  win
+}
+winnings <-1:1000;
+for (i in 1:1000){
+  winnings[i] <- betOn17()
+}
+plot(winnings)
+lines(winnings, lwd=1, col='blue')
+
+```
+```{r}
+hist(winnings)
+abline(v=mean(winnings), col="blue")
+```
+
+
+The mean value for the winnings over these trials was `r mean(winnings)`. We can look at quantiles for the winnings to get a sense of the distribution as shown in the histogram above. 
+```{r}
+winningQuantiles <- as.matrix(quantile (winnings,  p=seq(from = 0, to = 1, by = 0.1)))
+colnames(winningQuantiles) <- c("winnings")
+print(kable(winningQuantiles))
+```
+
 # Exercise 9, page 13, 14
-> The Labouchere system for roulette is played as follows. Write down a list ofnumbers, usually 1, 2, 3, 4. Bet the sum of the first and last, 1 + 4 = 5, on red. If you win, delete the first and last numbers from your list. If you lose,
-add the amount that you last bet to the end of your list. Then use the new list and bet the sum of the first and last numbers (if there is only one number, bet that amount). Continue until your list becomes empty. Show that, if this
+> The Labouchere system for roulette is played as follows. Write down a list ofnumbers, usually 1, 2, 3, 4. Bet the sum of the first and last, 1 + 4 = 5, on red. If you win, delete the first and last numbers from your list. If you lose, add the amount that you last bet to the end of your list. Then use the new list and bet the sum of the first and last numbers (if there is only one number, bet that amount). Continue until your list becomes empty. Show that, if this
 happens, you win the sum, 1 + 2 + 3 + 4 = 10, of your original list. Simulate this system and see if you do always stop and, hence, always win. If so, why is this not a foolproof gambling system?
+
+We can simulate the Labouchere method using the functions below.
+
+```{r}
+removeHeadTail <- function(aList) {
+  bList <- list()
+  if (length(aList) > 2) {
+    bList <- aList[2:(length(aList)-1)]
+  }
+  bList
+}
+betFromList <- function(aList) {
+  bet <- 0
+  if (length(aList) > 1) {
+    bet <- aList[1] + aList[length(aList)]
+  } 
+  if (length(aList) == 1){
+    bet <- aList[1]
+  }
+  bet
+}
+appendToList <- function(aList, aThing) {
+  aList[length(aList) +1] <- aThing
+  aList
+}
+
+betOnLabouchere <- function(){ 
+  labouchereList <- 1:4
+  keepBetting <- TRUE
+  winnings <- 1:1
+  winnings[1] <- 0
+  while (keepBetting){
+    if (length(labouchereList) < 1){
+      keepBetting <- FALSE
+    } else {
+      bet <- betFromList(labouchereList)
+      landed <- sample(Roulette$color, 1, replace=TRUE, prob=NULL)
+      if (landed == "red"){
+        winnings <- appendToList(winnings, winnings[length(winnings)] + bet)
+        labouchereList <- removeHeadTail(labouchereList)
+      } else {
+        winnings <- appendToList(winnings, winnings[length(winnings)] - bet)
+        labouchereList <- appendToList(labouchereList, bet)
+      }
+    }
+  }
+  winnings
+}
+
+#select a very long run
+max <- 0
+maxRun <- NULL
+for (i in 1:1000) {
+  currentRun <- betOnLabouchere()
+  if (length(currentRun) > max){
+    max = length(currentRun)
+    maxRun <- currentRun
+  }
+}
+plot(maxRun)
+lines(maxRun, lwd=1, col='blue')
+```
+
+Although the betting method eventually halts and gives a sum of 10, it may take a long time to get there, and you may go very deep into debt while applying the methods. An example of a very long run is shown above. This run took `r length(maxRun)` turns to complete, and at one point the winnings dipped to the low of `r min(maxRun)`. 
+
 
 # Exercise 10, page 14
 > Another well-known gambling system is the martingale doubling system. Suppose that you are betting on red to turn up in roulette. Every time you win, bet 1 dollar next time. Every time you lose, double your previous bet. Suppose that you use this system until you have won at least 5 dollars or you have lost more than 100 dollars. Write a program to simulate this and play it a number of times and see how you do. In his book The Newcomes, W. M. Thackeray remarks “You have not played as yet? Do not do so; above all avoid a martingale if you do.” Was this good advice?
