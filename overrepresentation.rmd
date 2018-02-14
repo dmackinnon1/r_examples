@@ -1,0 +1,49 @@
+---
+title: "Overrepresentation"
+author: "Dan MacKinnon"
+date: "February 14, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Overrepresentation occurs when a group within a population is disproportinately found within a subset of the population. When applied to human groups, overrepresenation is often indicative of an underlying bias or social issue. For example:
+
+> Aboriginal men and women make up 4% of the Canadian population. However, 20% of female victims of homicide in Canada are Aboriginal.
+
+> Though African Americans and Hispanics make up approximately 32% of the US population, they comprised 56% of all incarcerated people in the US.
+
+> Men represent about 49% of the US population, but represent 72.2% of appointments to boards of directors of Fortune 500 companies.
+
+When we make statements about overrepresentation, sometimes we want to say tings like "A man is X times more likely than a woman to be appointed to a board of directors." However, it is not immediately obvious how to make such a statement based on the data provided. In this notebook, we'll look at how we can use conditional probability to make such statements.
+
+>There is a group A that makes up 4% of a population. Within the population there is a subset X, and group A makes up 20% of that group. We would say that A is overrepresented in the subset X. How much more likely a person of group A will end up in subset X compared to someone not in group A.
+
+## Direct Calculation
+
+The problem can be expressed in terms of conditional probabilities. If we say that $A$ is the event that a person is in group A, and $X$ is the event that a person is in group X, we know the probability of being in group A, $p(A) = 0.04$, and the probability of being in group A given that you in subset X, $p(A|X) = 0.8$. Also, we know the corresponding probabilities for those not in group A, $p(\neg A) = 0.96$ and $p(\neg A|X) = 0.2$.
+
+What we would like to calculate is the probability of someone being in subset X given that you are in group A, compared to the probability of being in subset X given that you are not in group A. We can express this as:
+
+$$\frac{p(X|A)}{p(X|\neg A)}$$ 
+Four formulas we will use:
+$$p(A|X) = \frac{p(X \cap A)}{p(X)} = 0.2$$
+$$p(\neg A|X) = \frac{p(X \cap \neg A)}{p(X)} = 0.8$$
+
+$$p(X|A) = \frac{p(X \cap A)}{p(A)} =  \frac{p(X \cap A)}{0.04}$$
+$$p(X|\neg A) = \frac{p(X \cap \neg A)}{p(\neg A)} =  \frac{p(X \cap \neg A)}{0.96}$$
+Combining these, we have 
+
+$$p(X|A) = \frac{0.2}{0.04}p(X)$$
+and
+$$p(X| \neg A) = \frac{0.8}{0.96}p(X)$$
+So, consequently 
+
+$$\frac{p(X|A)}{p(X| \neg A)} = \frac{0.2}{0.04}\times\frac{0.96}{0.8} = 6$$
+
+Based on these calculations, we would say that a person belonging to group A is 6 times more likely than someone not in group A to belong to subset X.
+
+
+## Simulation
