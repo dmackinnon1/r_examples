@@ -17,9 +17,13 @@ Overrepresentation occurs when a group within a population is disproportinately 
 
 > Men represent about 49% of the US population, but represent 72.2% of appointments to boards of directors of Fortune 500 companies.
 
+In each case, a particular group is represented at a different level within a particular subset of a population than it is represented in the general population 
+
 When we make statements about overrepresentation, sometimes we want to say tings like "A man is X times more likely than a woman to be appointed to a board of directors." However, it is not immediately obvious how to make such a statement based on the data provided. In this notebook, we'll look at how we can use conditional probability to make such statements.
 
->There is a group A that makes up 4% of a population. Within the population there is a subset X, and group A makes up 20% of that group. We would say that A is overrepresented in the subset X. How much more likely a person of group A will end up in subset X compared to someone not in group A.
+## Problem statement
+
+>There is a group A that makes up 4% of a population. Within the population there is a subset X, and group A makes up 20% of that subset. We would say that A is overrepresented in the subset X. How much more likely is it that a person of group A will end up in subset X compared to someone not in group A?
 
 ## Direct Calculation
 
@@ -47,3 +51,6 @@ Based on these calculations, we would say that a person belonging to group A is 
 
 
 ## Simulation
+
+
+## General formula
