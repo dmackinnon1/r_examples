@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Overrepresentation occurs when a group within a population is disproportinately found within a subset of the population. When applied to human groups, overrepresenation is often indicative of an underlying bias or social issue. For example:
 
-> Aboriginal men and women make up 4% of the Canadian population. However, 20% of female victims of homicide in Canada are Aboriginal.
+> Indigenous people make up 4% of the Canadian population. However, 20% of female victims of homicide in Canada are Indigenous.
 
 > Though African Americans and Hispanics make up approximately 32% of the US population, they comprised 56% of all incarcerated people in the US.
 
@@ -23,31 +23,42 @@ When we make statements about overrepresentation, sometimes we want to say tings
 
 ## Problem statement
 
->There is a group A that makes up 4% of a population. Within the population there is a subset X, and group A makes up 20% of that subset. We would say that A is overrepresented in the subset X. How much more likely is it that a person of group A will end up in subset X compared to someone not in group A?
+>There is a group X that makes up 4% of a population. Within the population there is a subset Y, and group X makes up 20% of that subset. We would say that X is overrepresented in the subset Y. How much more likely is it that a person of group X will end up in subset Y compared to someone not in group X?
 
 ## Direct Calculation
 
-The problem can be expressed in terms of conditional probabilities. If we say that $A$ is the event that a person is in group A, and $X$ is the event that a person is in group X, we know the probability of being in group A, $p(A) = 0.04$, and the probability of being in group A given that you in subset X, $p(A|X) = 0.8$. Also, we know the corresponding probabilities for those not in group A, $p(\neg A) = 0.96$ and $p(\neg A|X) = 0.2$.
+The problem can be expressed in terms of conditional probabilities. The probability of an event A given that an event B has already occured is called the conditional probablility of A given B, is written as $p(A|B)$ and has the formula:
 
-What we would like to calculate is the probability of someone being in subset X given that you are in group A, compared to the probability of being in subset X given that you are not in group A. We can express this as:
+$$p(A|B) = \frac{p(A \cap B)}{p(B)}$$
 
-$$\frac{p(X|A)}{p(X|\neg A)}$$ 
-Four formulas we will use:
-$$p(A|X) = \frac{p(X \cap A)}{p(X)} = 0.2$$
-$$p(\neg A|X) = \frac{p(X \cap \neg A)}{p(X)} = 0.8$$
 
-$$p(X|A) = \frac{p(X \cap A)}{p(A)} =  \frac{p(X \cap A)}{0.04}$$
-$$p(X|\neg A) = \frac{p(X \cap \neg A)}{p(\neg A)} =  \frac{p(X \cap \neg A)}{0.96}$$
-Combining these, we have 
 
-$$p(X|A) = \frac{0.2}{0.04}p(X)$$
-and
-$$p(X| \neg A) = \frac{0.8}{0.96}p(X)$$
-So, consequently 
+If we say that $X$ is the event that a person is in group X, and $Y$ is the event that a person is in subset Y, we know the probability of being in group X is $p(X) = 0.04$, and the probability of being in group X given that they are in subset Y, $p(X|Y) = 0.8$. Also, we know the corresponding probabilities for those not in group X, $p(\neg X) = 0.96$ and $p(\neg X|Y) = 0.2$.
 
-$$\frac{p(X|A)}{p(X| \neg A)} = \frac{0.2}{0.04}\times\frac{0.96}{0.8} = 6$$
+What we would like to calculate is the probability of someone being in subset Y given that they are in group X, compared to the probability of being in subset Y given that they are not in group X. We can express this as:
 
-Based on these calculations, we would say that a person belonging to group A is 6 times more likely than someone not in group A to belong to subset X.
+$$\frac{p(Y|X)}{p(Y|\neg X)}$$ 
+First, we can find a formula that expresses how being a member in group X affects the probabilty of being in subset Y. 
+
+$$p(X|Y) = \frac{p(X \cap Y)}{p(Y)} = 0.2$$
+So, $p(X \cap Y) = 0.2 \times p(y)$. To obtain an expression for $p(Y|X)$, we start with the conditional probability formula, and substitute in the value we know for $p(X)$.
+$$p(Y|X) = \frac{p(X \cap Y)}{p(X)} = \frac{p(X \cap Y)}{0.04}$$
+$$p(Y|X) = \frac{p(X \cap Y)}{0.04} = \frac{0.2p(Y)}{0.04} = 5p(Y) $$
+This formula is expressing how being a member of the group X impacts the probability of being in subset Y. In this particular case, being in group X makes it 5 times more likely to be in subset Y, when compared to the 'raw' probability of being in subset Y.
+
+The same sort of calculation can tell us how not being a member of the group X impacts the probability of being in subset Y.
+
+
+$$p(\neg X|Y) = \frac{p(Y \cap \neg X)}{p(Y)} = 0.8$$
+
+So, $p(Y \cap \neg X) = 0.8p(Y)$, and substituting this into the formula for $p(Y| \neg X)$ we obtain:
+
+$$p(Y|\neg X) = \frac{p(Y \cap \neg X)}{p(\neg X)} =  \frac{p(Y \cap \neg X)}{0.96} =  \frac{0.8p(Y)}{0.96} = \frac{5}{6}p(Y)$$
+Combining these, 
+
+$$\frac{p(Y|X)}{p(Y|\neg X)} = \frac{5p(Y)}{\frac{5}{6}p(Y)} = 6$$
+
+Based on these calculations, we would say that a person belonging to group X is 6 times more likely than someone not in group X to belong to subset Y.
 
 
 ## Simulation
