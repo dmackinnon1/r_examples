@@ -63,5 +63,66 @@ Based on these calculations, we would say that a person belonging to group X is 
 
 ## Simulation
 
+Returning to the problem statement:
+
+>There is a group X that makes up 4% of a population. Within the population there is a subset Y, and group X makes up 20% of that subset. We would say that X is overrepresented in the subset Y. How much more likely is it that a person of group X will end up in subset Y compared to someone not in group X?
+
+```{r}
+base_rate <- 0.1
+x_rate <- 5*base_rate
+nx_rate <- 0.8*base_rate
+trial <- 1:5000
+OverRep <- data.frame(trial)
+OverRep$memberX <- (runif(5000,0,1) <= 0.04)
+for (i in trial){
+  if (OverRep$memberX[i]){
+    OverRep$memberY[i] <- runif(1,0,1) <= x_rate
+  } else {
+    OverRep$memberY[i] <- runif(1,0,1) <= nx_rate
+  }
+}
+
+```
+As designed, about 4% is in group X:
+```{r}
+prop.table(table(OverRep$memberX))
+```
+We should see that the base rate of membership in subset Y for the whole population is about 10%.
+```{r}
+prop.table(table(OverRep$memberY))
+```
+However, members of group X make up a disproportionate amount of the subset Y.
+```{r}
+t <- table(OverRep$memberX, OverRep$memberY)
+barplot(t, main="Representation in group X and subset Y",
+  xlab="", col=c("light grey","dark grey"),
+ 	legend = c('in X', 'in Y'))
+```
+
+About 20% of subset Y should be members of the group X.
+```{r}
+InSubsetY <- subset(OverRep, memberY==TRUE)
+prop.table(table(InSubsetY$memberX))
+```
 
 ## General formula
+
+The quotient described above  general measure of the overrepresentation of the group X in subset Y:
+
+$$OverRep(X,Y) = \frac{p(Y|X)}{p(Y|\neg X)} $$
+
+Using the numbers usually presented when talking about overrepresentation if $p$ is the fraction of the population in group X, and $q$ is the fraction of the population in subset Y that is in group X, we have:
+
+$$OverRep(X,Y) = \frac{q}{p}\times\frac{1-p}{1-q} $$
+In the example above this is
+$$OverRep(X,Y) = \frac{0.2}{0.04}\times\frac{0.96}{0.8} = 6 $$
+
+Like most statistics, this can be misleading when used to describe individuals. Consider the problem of the male and female CEOs mentioned above:
+
+> Men represent about 49% of the US population, but represent 72.2% of appointments to boards of directors of Fortune 500 companies.
+
+If $M$ is being male and $C$ is bieng a CEO:
+
+$OverRep(M,C) = \frad{0.722}{0.49}\times \frac{0.51}{0.278} = 2.7$
+
+If we consider Joe and Jane, where Joe is a 40 year old high school drop out, and Jane is a 40 year old MBA graduate with a law degree, is Joe almost 3 times more likely to be a CEO than Jane? No. But what the "over representation quotient" does say is that there is a discrepancy between male and female representation among CEOs, and the 2.7 provides a measure of how acute that discrepancy is.
