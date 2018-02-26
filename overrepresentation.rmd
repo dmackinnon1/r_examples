@@ -67,6 +67,8 @@ Returning to the problem statement:
 
 >There is a group X that makes up 4% of a population. Within the population there is a subset Y, and group X makes up 20% of that subset. We would say that X is overrepresented in the subset Y. How much more likely is it that a person of group X will end up in subset Y compared to someone not in group X?
 
+In this case, the simulation will use the results above,  $p(Y \cap \neg X) = 0.8p(Y)$ and $p(Y|X) = 5p(Y)$ and see if we observe results that are consistent with the problem statement "group X makes up 20% of subset Y." Since we do not have a value for the probablilty $p(X)$ we will choose an arbitrary *base_rate* value of 0.1.
+
 ```{r}
 base_rate <- 0.1
 x_rate <- 5*base_rate
@@ -116,6 +118,10 @@ Using the numbers usually presented when talking about overrepresentation if $p$
 $$OverRep(X,Y) = \frac{q}{p}\times\frac{1-p}{1-q} $$
 In the example above this is
 $$OverRep(X,Y) = \frac{0.2}{0.04}\times\frac{0.96}{0.8} = 6 $$
+
+This formula for overrepresentation is consistent with what we would naively derrive for such a measure. In this case, we can see that what you may have expected to use as a description of overrepresentation lines up with what is arrived at from using ideas from conditional probability.
+
+## Use and abuse
 
 Like most statistics, this can be misleading when used to describe individuals. Consider the problem of the male and female CEOs mentioned above:
 
