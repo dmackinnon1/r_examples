@@ -4,11 +4,12 @@
 # Plots 100 frames of 100 points of phyllotaxis-like spirals.
 library('anim.plots')
 t <- 1:100
-p <- (1 + sqrt(5))*pi
+p <- (1 + sqrt(5))*pi*10
 x <- NULL
 y <- NULL
-for (i in 1:100) {
-  x <- c(x, sqrt(t)*cos(p*t*i/100))
-  y <- c(y, sqrt(t)*sin(p*t*i/100))
+frames <- 100
+for (i in 1:frames) {
+  x <- c(x, sqrt(t)*cos(p*t/i))
+  y <- c(y, sqrt(t)*sin(p*t/i))
 }
-anim.plot(x, y, times=100, type="p", axes=FALSE)
+anim.plot(x, y, times=frames, type="p",speed=20, axes=FALSE)
