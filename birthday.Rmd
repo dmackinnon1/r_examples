@@ -7,7 +7,7 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-##Introduction
+## Introduction
 The Birthday Problem, as frequently happens in questions of probability, is easy to state and understand, yet leads to an (initially) suprising solution.
 
 > In a group of *n* people, how likely is it to find two or more people sharing the same birthday?
